@@ -16,7 +16,7 @@ int main() {
 
     std::cout << "Initialization success\n";
 
-    //Address = IPv6 (AF_INET6); Communication = TCP (SOCK_STREAM); Protocol = TCP (IPROTO_TCP)
+    //Address = IPv6 (AF_INET6); Communication = TCP-style byte stream (SOCK_STREAM); Protocol = TCP (IPROTO_TCP)
     SOCKET clientSocket = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
 
     if(clientSocket == INVALID_SOCKET) {
