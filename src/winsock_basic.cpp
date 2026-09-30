@@ -37,7 +37,7 @@ int main() {
 
     result = connect(
         clientSocket,
-        reinterpret_cast<sockaddr*>(&serverAddress),
+        reinterpret_cast<sockaddr*>(&serverAddress),  // This parameter collects a common sockaddr pointer, so we reinterpret cast to sockaddr*
         sizeof(serverAddress)
     );
 
