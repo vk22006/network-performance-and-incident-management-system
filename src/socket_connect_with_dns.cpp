@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 
@@ -86,11 +87,21 @@ int main() {
             continue;
         }
 
+        // Setting timer to calculate connect() duration
+        auto start = std::chrono::steady_clock::now();
+
         result = connect(
             clientSocket,
             current->ai_addr,
             static_cast<int>(current->ai_addrlen)
         );
+
+        auto end = std::chrono::steady_clock::now();
+
+        auto connectTime =
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                end - start
+            ).count();
 
         if (result == SOCKET_ERROR) {
             std::cout << "Connection failed\n\n";
@@ -100,6 +111,7 @@ int main() {
         }
 
         std::cout << "Connection successful\n\n";
+        std::cout << "TCP Connect Time: " << connectTime << "ms\n\n";
 
         connectedSocket = clientSocket;
         break;
