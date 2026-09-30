@@ -38,6 +38,53 @@ int main() {
 
     std::cout << "DNS resolution successful\n";
 
+    // Displaying DNS info using linked-list traversal
+    for (addrinfo* current = addressResults;
+        current != nullptr;
+        current = current->ai_next) {
+
+        char addressBuffer[INET6_ADDRSTRLEN];
+
+        if (current->ai_family == AF_INET)
+        {
+            std::cout << "IPv4 address found\n";
+
+            sockaddr_in* address =
+                reinterpret_cast<sockaddr_in*>(current->ai_addr);
+
+            inet_ntop(
+                AF_INET,
+                &address->sin_addr,
+                addressBuffer,
+                sizeof(addressBuffer)
+            );
+        }
+        else if (current->ai_family == AF_INET6)
+        {
+            std::cout << "IPv6 address found\n";
+
+            sockaddr_in6* address =
+                reinterpret_cast<sockaddr_in6*>(current->ai_addr);
+
+            inet_ntop(
+                AF_INET6,
+                &address->sin6_addr,
+                addressBuffer,
+                sizeof(addressBuffer)
+            );
+        }
+
+        std::cout << "Socket type: "
+                << current->ai_socktype << '\n';
+
+        std::cout << "Protocol: "
+                << current->ai_protocol << '\n';
+
+        std::cout << "Address: " << addressBuffer << '\n';
+
+        std::cout << '\n';
+    }
+
     freeaddrinfo(addressResults);
     WSACleanup();
     return 0;
