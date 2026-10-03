@@ -13,7 +13,36 @@ int main() {
         return 1;
     }
 
-    std::cout << "ICMP handle created successfully\n";
+    IPAddr destination = inet_addr("1.1.1.1");
+
+    char data[] = "Hello";
+
+    char replyBuffer[sizeof(ICMP_ECHO_REPLY) + 32];
+
+    DWORD result = IcmpSendEcho(
+        icmpHandle,
+        destination,
+        data,
+        sizeof(data),
+        nullptr,
+        replyBuffer,
+        sizeof(replyBuffer),
+        1000
+    );
+
+    if (result == 0) {
+        std::cout << "Ping failed\n";
+    }
+    else {
+        ICMP_ECHO_REPLY* reply =
+            reinterpret_cast<ICMP_ECHO_REPLY*>(replyBuffer);
+
+        std::cout << "Ping successful\n";
+
+        std::cout << "RTT: "
+                  << reply->RoundTripTime
+                  << " ms\n";
+    }
 
     IcmpCloseHandle(icmpHandle);
 
