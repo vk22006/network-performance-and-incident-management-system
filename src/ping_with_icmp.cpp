@@ -4,6 +4,7 @@
 #include <IcmpAPI.h>
 
 #pragma comment(lib, "Iphlpapi.lib")
+#pragma comment(lib, "Ws2_32.lib")
 
 int main() {
     HANDLE icmpHandle = IcmpCreateFile();
